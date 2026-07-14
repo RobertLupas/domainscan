@@ -1,12 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle.tsx"
-import { Card, CardHeader } from "@/components/ui/card.tsx"
+import { Card, CardContent, CardHeader } from "@/components/ui/card.tsx"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Github01Icon, Search01Icon } from "@hugeicons/core-free-icons"
 import { cn } from "@/lib/utils.ts"
 import { Input } from "@/components/ui/input.tsx"
 import { ButtonGroup } from "@/components/ui/button-group.tsx"
+import DomainCard from "@/components/domainCard.tsx"
 
 export const Route = createFileRoute("/")({ component: App })
 
@@ -39,8 +40,8 @@ function App() {
         </Card>
       </div>
 
-      <div className="flex flex-1 items-center justify-center">
-        <Card className="w-full max-w-2xl">
+      <div className="flex flex-1 flex-col items-center justify-center gap-4">
+        <Card className="w-full max-w-md">
           <CardHeader>
             <h2 className="font-heading text-lg font-medium">Search domain</h2>
             <ButtonGroup className="w-full">
@@ -53,6 +54,23 @@ function App() {
               </Button>
             </ButtonGroup>
           </CardHeader>
+        </Card>
+
+        <Card className="w-full max-w-md">
+          <CardContent className="flex flex-col gap-4">
+            <DomainCard domain={"example.com"} available={true} price={12} />
+            <DomainCard domain={"example.com"} available={false} />
+            <DomainCard
+              domain={"example.com"}
+              available={false}
+              loading={true}
+            />
+
+            {currentDomainList.length > 0 &&
+              currentDomainList.map((domain: string, index: number) => (
+                <DomainCard domain={domain} available={true} key={index} />
+              ))}
+          </CardContent>
         </Card>
       </div>
     </div>

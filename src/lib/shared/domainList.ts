@@ -3,38 +3,46 @@ import { getDomain } from "tldts"
 const prefixes = ["use", "join", "try", "my", "your"]
 const tlds = ["com", "app", "so"]
 
-export function getDomainList(nameOrDomain: string): string[] {
+export function getDomainList(
+  nameOrDomain: string,
+  separateWithHyphen: boolean = false,
+  tryWithPrefix: boolean = false
+): string[] {
   nameOrDomain = nameOrDomain.trim().toLowerCase()
   if (nameOrDomain.length === 0) return []
 
   const domain = getDomain(nameOrDomain)
 
   if (domain != null) return [domain]
-  else {
-    const words = nameOrDomain.split(/[^A-Za-z0-9-]+/).filter(Boolean)
-    const combined: string[] = []
-    const combinedWithTlds: string[] = []
+
+  const words = nameOrDomain.split(/[^A-Za-z0-9-]+/).filter(Boolean)
+  const combined: string[] = []
+
+  if (!separateWithHyphen) {
     combined.push(words.join(""))
 
-    for (const prefix of prefixes)
-      if (!words[0].startsWith(prefix))
-        combined.push(`${prefix}${words.join("")}`)
+    if (tryWithPrefix)
+      for (const prefix of prefixes)
+        if (!words[0].startsWith(prefix))
+          combined.push(`${prefix}${words.join("")}`)
+  } else {
+    combined.push(words.join("-"))
 
-    if (words.length > 1) {
-      combined.push(words.join("-"))
+    if (tryWithPrefix) {
       for (const prefix of prefixes)
         if (!words[0].startsWith(prefix))
           combined.push(`${prefix}-${words.join("-")}`)
+
+      for (const prefix of prefixes)
+        if (!words[0].startsWith(prefix))
+          combined.push(`${prefix}-${words.join("")}`)
     }
-
-    for (const prefix of prefixes)
-      if (!words[0].startsWith(prefix))
-        combined.push(`${prefix}-${words.join("")}`)
-
-    for (const tld of tlds)
-      for (const combinedWords of combined)
-        combinedWithTlds.push(`${combinedWords}.${tld}`)
-
-    return combinedWithTlds
   }
+
+  const combinedWithTlds: string[] = []
+  for (const tld of tlds)
+    for (const combinedWords of combined)
+      combinedWithTlds.push(`${combinedWords}.${tld}`)
+
+  return combinedWithTlds
 }

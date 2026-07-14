@@ -25,6 +25,7 @@
     "@tanstack/react-start": "latest",
     "@tanstack/router-plugin": "latest",
     "class-variance-authority": "^0.7.1",
+    "cloudflare": "^7.0.0",
     "clsx": "^2.1.1",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",

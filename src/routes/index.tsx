@@ -71,6 +71,7 @@ function App() {
             <h2 className="font-heading text-lg font-medium">Search domain</h2>
             <ButtonGroup className="w-full">
               <Input
+                autoFocus
                 placeholder="Enter a name or domain"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}

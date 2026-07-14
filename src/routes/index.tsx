@@ -7,11 +7,20 @@ import { Github01Icon, Search01Icon } from "@hugeicons/core-free-icons"
 import { cn } from "@/lib/utils.ts"
 import { Input } from "@/components/ui/input.tsx"
 import { ButtonGroup } from "@/components/ui/button-group.tsx"
+import { getDomainList } from "@/lib/shared/domainList.ts"
+import React from "react"
 import DomainCard from "@/components/domainCard.tsx"
 
 export const Route = createFileRoute("/")({ component: App })
 
 function App() {
+  const [search, setSearch] = React.useState("")
+  const [currentDomainList, setCurrentDomainList] = React.useState<string[]>([])
+
+  const handleSearch = () => {
+    setCurrentDomainList(getDomainList(search))
+  }
+
   return (
     <div className="flex h-fit min-h-screen flex-col gap-4 p-2">
       <div className="sticky px-8 py-2">
@@ -46,32 +55,33 @@ function App() {
             <h2 className="font-heading text-lg font-medium">Search domain</h2>
             <ButtonGroup className="w-full">
               <Input
-                id="input-button-group"
                 placeholder="Enter a name or domain"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleSearch()
+                }}
               />
-              <Button variant="outline" size="icon">
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => handleSearch()}
+              >
                 <HugeiconsIcon icon={Search01Icon} />
               </Button>
             </ButtonGroup>
           </CardHeader>
         </Card>
 
-        <Card className="w-full max-w-md">
-          <CardContent className="flex flex-col gap-4">
-            <DomainCard domain={"example.com"} available={true} price={12} />
-            <DomainCard domain={"example.com"} available={false} />
-            <DomainCard
-              domain={"example.com"}
-              available={false}
-              loading={true}
-            />
-
-            {currentDomainList.length > 0 &&
-              currentDomainList.map((domain: string, index: number) => (
+        {currentDomainList.length > 0 && (
+          <Card className="w-full max-w-md">
+            <CardContent className="flex flex-col gap-4">
+              {currentDomainList.map((domain: string, index: number) => (
                 <DomainCard domain={domain} available={true} key={index} />
               ))}
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        )}
       </div>
     </div>
   )

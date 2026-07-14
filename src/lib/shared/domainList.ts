@@ -4,7 +4,7 @@ const prefixes = ["use", "join", "try", "my", "your"]
 const tlds = ["com", "app", "so"]
 
 export function getDomainList(nameOrDomain: string): string[] {
-  nameOrDomain = nameOrDomain.trim()
+  nameOrDomain = nameOrDomain.trim().toLowerCase()
   if (nameOrDomain.length === 0) return []
 
   const domain = getDomain(nameOrDomain)
@@ -18,16 +18,18 @@ export function getDomainList(nameOrDomain: string): string[] {
 
     for (const prefix of prefixes)
       if (!words[0].startsWith(prefix))
-        combinedWithTlds.push(`${prefix}${words.join("")}`)
+        combined.push(`${prefix}${words.join("")}`)
 
-    combined.push(words.join("-"))
+    if (words.length > 1) {
+      combined.push(words.join("-"))
+      for (const prefix of prefixes)
+        if (!words[0].startsWith(prefix))
+          combined.push(`${prefix}-${words.join("-")}`)
+    }
+
     for (const prefix of prefixes)
       if (!words[0].startsWith(prefix))
-        combinedWithTlds.push(`${prefix}-${words.join("-")}`)
-
-    for (const prefix of prefixes)
-      if (!words[0].startsWith(prefix))
-        combinedWithTlds.push(`${prefix}-${words.join("")}`)
+        combined.push(`${prefix}-${words.join("")}`)
 
     for (const tld of tlds)
       for (const combinedWords of combined)

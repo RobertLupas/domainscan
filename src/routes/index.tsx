@@ -3,7 +3,7 @@ import { Button, buttonVariants } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle.tsx"
 import { Card, CardContent, CardHeader } from "@/components/ui/card.tsx"
 import { HugeiconsIcon } from "@hugeicons/react"
-import { Github01Icon, Search01Icon } from "@hugeicons/core-free-icons"
+import { Cancel01Icon, Github01Icon, Search01Icon, } from "@hugeicons/core-free-icons"
 import { cn } from "@/lib/utils.ts"
 import { Input } from "@/components/ui/input.tsx"
 import { ButtonGroup } from "@/components/ui/button-group.tsx"
@@ -15,10 +15,24 @@ export const Route = createFileRoute("/")({ component: App })
 
 function App() {
   const [search, setSearch] = React.useState("")
+  const [lastSearch, setLastSearch] = React.useState("")
   const [currentDomainList, setCurrentDomainList] = React.useState<string[]>([])
 
+  const searchChanged = () => search != lastSearch
+  const isSearchCancelable = () =>
+    !searchChanged() && currentDomainList.length > 0
+
   const handleSearch = () => {
-    setCurrentDomainList(getDomainList(search))
+    if (searchChanged()) {
+      setLastSearch(search)
+      setCurrentDomainList(getDomainList(search))
+    }
+  }
+
+  const cancelSearch = () => {
+    setSearch("")
+    setLastSearch("")
+    setCurrentDomainList([])
   }
 
   return (
@@ -63,11 +77,15 @@ function App() {
                 }}
               />
               <Button
-                variant="outline"
+                variant={isSearchCancelable() ? "destructive" : "outline"}
                 size="icon"
-                onClick={() => handleSearch()}
+                onClick={() =>
+                  isSearchCancelable() ? cancelSearch() : handleSearch()
+                }
               >
-                <HugeiconsIcon icon={Search01Icon} />
+                <HugeiconsIcon
+                  icon={isSearchCancelable() ? Cancel01Icon : Search01Icon}
+                />
               </Button>
             </ButtonGroup>
           </CardHeader>

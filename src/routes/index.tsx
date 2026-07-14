@@ -22,8 +22,10 @@ function App() {
   const isSearchCancelable = () =>
     !searchChanged() && currentDomainList.length > 0
 
+  const isSearchable = () => search.length > 0
+
   const handleSearch = () => {
-    if (searchChanged()) {
+    if (isSearchable() && searchChanged()) {
       setLastSearch(search)
       setCurrentDomainList(getDomainList(search))
     }

@@ -7,6 +7,7 @@ import { Cancel01Icon, Github01Icon, Search01Icon, } from "@hugeicons/core-free-
 import { cn } from "@/lib/utils.ts"
 import { Input } from "@/components/ui/input.tsx"
 import { ButtonGroup } from "@/components/ui/button-group.tsx"
+import type { Domain } from "@/lib/shared/domainList.ts"
 import { getDomainList } from "@/lib/shared/domainList.ts"
 import React from "react"
 import DomainCard from "@/components/domainCard.tsx"
@@ -19,11 +20,15 @@ export const Route = createFileRoute("/")({ component: App })
 function App() {
   const [search, setSearch] = React.useState("")
   const [lastSearch, setLastSearch] = React.useState("")
-  const [currentDomainList, setCurrentDomainList] = React.useState<string[]>([])
+  const [currentDomainList, setCurrentDomainList] = React.useState<Domain[]>([])
   const [hyphenToggle, setHyphenToggle] = React.useState(false)
   const [lastHyphenToggle, setLastHyphenToggle] = React.useState(false)
   const [prefixToggle, setPrefixToggle] = React.useState(false)
   const [lastPrefixToggle, setLastPrefixToggle] = React.useState(false)
+  const [loading, setLoading] = React.useState(false)
+  const [domainCheckError, setDomainCheckError] = React.useState<string | null>(
+    null
+  )
 
   const searchChanged = () =>
     search != lastSearch ||
@@ -43,11 +48,22 @@ function App() {
       setLastPrefixToggle(prefixToggle)
       setCurrentDomainList(domains)
 
-      await checkDomains({
-        data: { domains },
-      }).then((res) => {
-        console.log(res)
-      })
+      setLoading(true)
+      setDomainCheckError(null)
+
+      try {
+        const res = await checkDomains({
+          data: { domains },
+        })
+
+        if (res) {
+          setCurrentDomainList(res)
+        }
+      } catch {
+        setDomainCheckError("Error checking domains")
+      } finally {
+        setLoading(false)
+      }
     }
   }
 
@@ -132,14 +148,24 @@ function App() {
                 Add Prefixes
               </Toggle>
             </div>
+
+            {domainCheckError && (
+              <span className="mt-4 text-center text-red-500">
+                {domainCheckError}
+              </span>
+            )}
           </CardHeader>
         </Card>
 
-        {currentDomainList.length > 0 && (
+        {domainCheckError === null && currentDomainList.length > 0 && (
           <Card className="w-full max-w-md">
             <CardContent className="flex flex-col gap-4">
-              {currentDomainList.map((domain: string, index: number) => (
-                <DomainCard domain={domain} available={true} key={index} />
+              {currentDomainList.map((domain: Domain) => (
+                <DomainCard
+                  domain={domain}
+                  loading={loading}
+                  key={domain.name}
+                />
               ))}
             </CardContent>
           </Card>

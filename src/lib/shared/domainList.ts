@@ -3,17 +3,23 @@ import { getDomain } from "tldts"
 const prefixes = ["use", "join", "try", "my", "your"]
 const tlds = ["com", "app", "so"]
 
+export type Domain = {
+  name: string
+  available?: boolean
+  price: number | undefined
+}
+
 export function getDomainList(
   nameOrDomain: string,
   separateWithHyphen: boolean = false,
   addPrefixes: boolean = false
-): string[] {
+): Domain[] {
   nameOrDomain = nameOrDomain.trim().toLowerCase()
   if (nameOrDomain.length === 0) return []
 
   const domain = getDomain(nameOrDomain)
 
-  if (domain != null) return [domain]
+  if (domain != null) return [{ name: domain, price: undefined }]
 
   const words = nameOrDomain.split(/[^A-Za-z0-9-]+/).filter(Boolean)
   const combined: string[] = []
@@ -42,5 +48,8 @@ export function getDomainList(
     for (const combinedWords of combined)
       combinedWithTlds.push(`${combinedWords}.${tld}`)
 
-  return combinedWithTlds
+  return combinedWithTlds.map((name) => ({
+    name,
+    price: undefined,
+  }))
 }

@@ -12,6 +12,7 @@ import React from "react"
 import DomainCard from "@/components/domainCard.tsx"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs.tsx"
 import { Toggle } from "@/components/ui/toggle.tsx"
+import { checkDomains } from "@/lib/server/checkDomains.ts"
 
 export const Route = createFileRoute("/")({ component: App })
 
@@ -33,12 +34,20 @@ function App() {
 
   const isSearchable = () => search.length > 0
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
     if (isSearchable() && searchChanged()) {
+      const domains = getDomainList(search, hyphenToggle, prefixToggle)
+
       setLastSearch(search)
       setLastHyphenToggle(hyphenToggle)
       setLastPrefixToggle(prefixToggle)
-      setCurrentDomainList(getDomainList(search, hyphenToggle, prefixToggle))
+      setCurrentDomainList(domains)
+
+      await checkDomains({
+        data: { domains },
+      }).then((res) => {
+        console.log(res)
+      })
     }
   }
 

@@ -163,6 +163,10 @@ function App() {
         {domainCheckError === null && currentDomainList.length > 0 && (
           <Card className="w-full max-w-md">
             <CardContent className="flex flex-col gap-4">
+              <div className="flex items-center justify-between px-1 text-xs">
+                <span>Domain</span>
+                <span>Price/Availability</span>
+              </div>
               {currentDomainList.map((domain: Domain) => (
                 <DomainCard
                   domain={domain}

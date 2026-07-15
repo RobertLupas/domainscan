@@ -14,6 +14,7 @@ import DomainCard from "@/components/domainCard.tsx"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs.tsx"
 import { Toggle } from "@/components/ui/toggle.tsx"
 import { checkDomains } from "@/lib/server/checkDomains.ts"
+import AboutDialog from "@/components/aboutDialog.tsx"
 
 export const Route = createFileRoute("/")({ component: App })
 
@@ -86,6 +87,7 @@ function App() {
               <h1 className="font-heading text-xl font-medium">DomainScan</h1>
 
               <div className="flex items-center gap-2">
+                <AboutDialog />
                 <a
                   className={cn(
                     buttonVariants({

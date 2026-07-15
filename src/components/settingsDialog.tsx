@@ -19,9 +19,9 @@ import AboutDialog from "@/components/aboutDialog.tsx"
 import GithubLink from "@/components/githubLink.tsx"
 import { defaultPrefixList, defaultTldList } from "@/lib/shared/data.ts"
 import React from "react"
-import { cn } from "@/lib/utils.ts"
 import type { TldToggles, TldToggleState } from "@/lib/client/tldToggles.ts"
 import { Toggle } from "@/components/ui/toggle.tsx"
+import { cn } from "@/lib/utils.ts"
 
 export default function SettingsDialog({
   prefixList = defaultPrefixList,
@@ -84,13 +84,16 @@ export default function SettingsDialog({
                     Reset
                   </Button>
                 </div>
-                <p
-                  className={cn(
-                    "mb-2 text-xs text-muted-foreground",
-                    prefixList.length >= MAX_PREFIXES && "text-red-200"
-                  )}
-                >
-                  {prefixList.length}/{MAX_PREFIXES} prefixes
+                <p className="mb-2 text-xs text-muted-foreground">
+                  <span
+                    className={cn(
+                      prefixList.length >= MAX_PREFIXES && "text-red-200"
+                    )}
+                  >
+                    {prefixList.length}/{MAX_PREFIXES}.
+                  </span>
+                  <span> </span>
+                  <span>Click on an item to remove it.</span>
                 </p>
                 <div className="flex flex-wrap items-center gap-x-1 gap-y-2">
                   {prefixList.map((prefix) => (

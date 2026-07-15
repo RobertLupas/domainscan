@@ -17,16 +17,22 @@ import { ThemeToggle } from "@/components/theme-toggle.tsx"
 import { Separator } from "@/components/ui/separator.tsx"
 import AboutDialog from "@/components/aboutDialog.tsx"
 import GithubLink from "@/components/githubLink.tsx"
-import { defaultPrefixList } from "@/lib/shared/data.ts"
+import { defaultPrefixList, defaultTldList } from "@/lib/shared/data.ts"
 import React from "react"
 import { cn } from "@/lib/utils.ts"
+import type { TldToggles, TldToggleState } from "@/lib/client/tldToggles.ts"
+import { Toggle } from "@/components/ui/toggle.tsx"
 
 export default function SettingsDialog({
   prefixList = defaultPrefixList,
   onPrefixListChange,
+  tldToggles,
+  onTldToggleChange,
 }: {
   prefixList: string[]
   onPrefixListChange: React.Dispatch<React.SetStateAction<string[]>>
+  tldToggles: TldToggleState
+  onTldToggleChange: (key: TldToggles) => void
 }) {
   const MAX_PREFIXES = 6
 
@@ -121,6 +127,28 @@ export default function SettingsDialog({
                       <HugeiconsIcon icon={Add01Icon} />
                     </Button>
                   </ButtonGroup>
+                </div>
+              </div>
+
+              <div className="mt-4">
+                <div className="flex items-center justify-between py-1">
+                  <h2 className="mb-2 text-base font-semibold">TLD list</h2>
+                </div>
+                <p className="mb-2 text-xs text-muted-foreground">
+                  Click to toggle. At least one must be enabled.
+                </p>
+                <div className="flex flex-wrap items-center gap-x-1 gap-y-2">
+                  {defaultTldList.map((key) => (
+                    <Toggle
+                      pressed={tldToggles[key]}
+                      onPressedChange={() => onTldToggleChange(key)}
+                      variant="outline"
+                      size="sm"
+                      key={key}
+                    >
+                      {key}
+                    </Toggle>
+                  ))}
                 </div>
               </div>
 

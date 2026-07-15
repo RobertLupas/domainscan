@@ -18,8 +18,9 @@ import AboutDialog from "@/components/aboutDialog.tsx"
 import GithubLink from "@/components/githubLink.tsx"
 import { useIsMobile } from "@/hooks/use-mobile.ts"
 import { cn } from "@/lib/utils.ts"
-import { defaultPrefixList, defaultTldList } from "@/lib/shared/data.ts"
+import { defaultPrefixList } from "@/lib/shared/data.ts"
 import { useLocalStorage } from "usehooks-ts"
+import { defaultTldToggleState } from "@/lib/client/tldToggles.ts"
 
 export const Route = createFileRoute("/")({ component: App })
 
@@ -40,7 +41,13 @@ function App() {
     "prefixList",
     defaultPrefixList
   )
-  const [tldList, settldList] = React.useState<string[]>(defaultTldList)
+
+  const [tldToggleList, setTldToggleList] = useLocalStorage(
+    "tldToggleList",
+    defaultTldToggleState
+  )
+
+  const tldList = Object.keys(tldToggleList).filter((key) => tldToggleList[key])
 
   const searchChanged = () =>
     search != lastSearch ||
@@ -113,6 +120,20 @@ function App() {
                 <SettingsDialog
                   prefixList={prefixList}
                   onPrefixListChange={setPrefixList}
+                  tldToggles={tldToggleList}
+                  onTldToggleChange={(key) =>
+                    setTldToggleList((prev) => {
+                      const enabledCount =
+                        Object.values(prev).filter(Boolean).length
+
+                      if (prev[key] && enabledCount === 1) return prev
+
+                      return {
+                        ...prev,
+                        [key]: !prev[key],
+                      }
+                    })
+                  }
                 />
                 {!isMobile && <ThemeToggle />}
               </div>

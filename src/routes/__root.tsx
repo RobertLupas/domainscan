@@ -4,6 +4,7 @@ import { TanStackDevtools } from "@tanstack/react-devtools"
 
 import appCss from "../styles.css?url"
 import { ThemeProvider } from "@/components/theme-provider.tsx"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 
 export const Route = createRootRoute({
   head: () => ({
@@ -36,15 +37,18 @@ export const Route = createRootRoute({
 })
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+  const queryClient = new QueryClient()
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
       <body>
-        <ThemeProvider defaultTheme="system" storageKey="theme">
-          {children}
-        </ThemeProvider>
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider defaultTheme="system" storageKey="theme">
+            {children}
+          </ThemeProvider>
+        </QueryClientProvider>
         <TanStackDevtools
           config={{
             position: "bottom-right",

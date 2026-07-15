@@ -9,6 +9,7 @@ import { ButtonGroup } from "@/components/ui/button-group.tsx"
 import type { Domain } from "@/lib/shared/domainList.ts"
 import { getDomainList } from "@/lib/shared/domainList.ts"
 import React from "react"
+import { useQueryClient } from "@tanstack/react-query"
 import DomainCard from "@/components/domainCard.tsx"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs.tsx"
 import { Toggle } from "@/components/ui/toggle.tsx"
@@ -44,7 +45,6 @@ function App() {
     { initializeWithValue: false }
   )
   const [lastPrefixToggle, setLastPrefixToggle] = React.useState(prefixToggle)
-  const [loading, setLoading] = React.useState(false)
   const [domainCheckError, setDomainCheckError] = React.useState<string | null>(
     null
   )
@@ -69,6 +69,8 @@ function App() {
 
   const isSearchable = () => search.length > 0
 
+  const queryClient = useQueryClient()
+  const [loading, setLoading] = React.useState(false)
   const handleSearch = async () => {
     if (isSearchable() && searchChanged()) {
       const domains = getDomainList(
@@ -82,17 +84,22 @@ function App() {
       setLastSearch(search)
       setLastHyphenToggle(hyphenToggle)
       setLastPrefixToggle(prefixToggle)
+      setDomainCheckError(null)
       setCurrentDomainList(domains)
 
-      setLoading(true)
-      setDomainCheckError(null)
-
       try {
-        const res = await checkDomains({
-          data: { domains },
+        setLoading(true)
+        const data = await queryClient.fetchQuery({
+          queryKey: ["domain-check", domains],
+          queryFn: () =>
+            checkDomains({
+              data: { domains },
+            }),
+          staleTime: 1000 * 60 * 10,
         })
 
-        setCurrentDomainList(res ?? [])
+        setCurrentDomainList(data ?? [])
+        setLoading(false)
       } catch (err) {
         setCurrentDomainList([])
         setDomainCheckError(
@@ -100,8 +107,6 @@ function App() {
             ? `Error checking domains ${err.message}`
             : "Error checking domains."
         )
-      } finally {
-        setLoading(false)
       }
     }
   }

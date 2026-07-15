@@ -19,6 +19,7 @@ import GithubLink from "@/components/githubLink.tsx"
 import { useIsMobile } from "@/hooks/use-mobile.ts"
 import { cn } from "@/lib/utils.ts"
 import { defaultPrefixList, defaultTldList } from "@/lib/shared/data.ts"
+import { useLocalStorage } from "usehooks-ts"
 
 export const Route = createFileRoute("/")({ component: App })
 
@@ -35,8 +36,10 @@ function App() {
   const [domainCheckError, setDomainCheckError] = React.useState<string | null>(
     null
   )
-  const [prefixList, setPrefixList] =
-    React.useState<string[]>(defaultPrefixList)
+  const [prefixList, setPrefixList] = useLocalStorage<string[]>(
+    "prefixList",
+    defaultPrefixList
+  )
   const [tldList, settldList] = React.useState<string[]>(defaultTldList)
 
   const searchChanged = () =>

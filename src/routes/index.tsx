@@ -10,6 +10,8 @@ import { ButtonGroup } from "@/components/ui/button-group.tsx"
 import { getDomainList } from "@/lib/shared/domainList.ts"
 import React from "react"
 import DomainCard from "@/components/domainCard.tsx"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs.tsx"
+import { Toggle } from "@/components/ui/toggle.tsx"
 
 export const Route = createFileRoute("/")({ component: App })
 
@@ -17,8 +19,15 @@ function App() {
   const [search, setSearch] = React.useState("")
   const [lastSearch, setLastSearch] = React.useState("")
   const [currentDomainList, setCurrentDomainList] = React.useState<string[]>([])
+  const [hyphenToggle, setHyphenToggle] = React.useState(false)
+  const [lastHyphenToggle, setLastHyphenToggle] = React.useState(false)
+  const [prefixToggle, setPrefixToggle] = React.useState(false)
+  const [lastPrefixToggle, setLastPrefixToggle] = React.useState(false)
 
-  const searchChanged = () => search != lastSearch
+  const searchChanged = () =>
+    search != lastSearch ||
+    hyphenToggle != lastHyphenToggle ||
+    prefixToggle != lastPrefixToggle
   const isSearchCancelable = () =>
     !searchChanged() && currentDomainList.length > 0
 
@@ -27,7 +36,9 @@ function App() {
   const handleSearch = () => {
     if (isSearchable() && searchChanged()) {
       setLastSearch(search)
-      setCurrentDomainList(getDomainList(search))
+      setLastHyphenToggle(hyphenToggle)
+      setLastPrefixToggle(prefixToggle)
+      setCurrentDomainList(getDomainList(search, hyphenToggle, prefixToggle))
     }
   }
 
@@ -91,6 +102,27 @@ function App() {
                 />
               </Button>
             </ButtonGroup>
+
+            <div className="mt-2 grid gap-2 min-[400px]:grid-cols-[1fr_auto]">
+              <Tabs
+                value={hyphenToggle ? "hyphen" : "no-separator"}
+                onValueChange={(value) => setHyphenToggle(value === "hyphen")}
+                className="w-full"
+              >
+                <TabsList className="w-full">
+                  <TabsTrigger value="no-separator">No separator</TabsTrigger>
+                  <TabsTrigger value="hyphen">Hyphen</TabsTrigger>
+                </TabsList>
+              </Tabs>
+
+              <Toggle
+                variant="outline"
+                pressed={prefixToggle}
+                onPressedChange={setPrefixToggle}
+              >
+                Add Prefixes
+              </Toggle>
+            </div>
           </CardHeader>
         </Card>
 

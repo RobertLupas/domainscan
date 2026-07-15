@@ -83,7 +83,7 @@ function App() {
   }
 
   return (
-    <div className="flex h-fit min-h-screen flex-col gap-4 p-2">
+    <div className="flex h-fit min-h-screen flex-col p-2">
       <header className={cn("sticky py-2", isMobile ? "px-4" : "px-8")}>
         <Card size="sm">
           <CardHeader>
@@ -105,7 +105,7 @@ function App() {
         </Card>
       </header>
 
-      <div className="flex flex-1 flex-col items-center justify-center gap-4">
+      <div className="mt-2 flex flex-1 flex-col items-center justify-center gap-4 px-4">
         <Card className="w-full max-w-md">
           <CardHeader>
             <h2 className="font-heading text-lg font-medium">Search domain</h2>

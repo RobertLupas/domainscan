@@ -17,6 +17,7 @@ import SettingsDialog from "@/components/settingsDialog.tsx"
 import AboutDialog from "@/components/aboutDialog.tsx"
 import GithubLink from "@/components/githubLink.tsx"
 import { useIsMobile } from "@/hooks/use-mobile.ts"
+import { cn } from "@/lib/utils.ts"
 
 export const Route = createFileRoute("/")({ component: App })
 
@@ -83,7 +84,7 @@ function App() {
 
   return (
     <div className="flex h-fit min-h-screen flex-col gap-4 p-2">
-      <div className="sticky px-8 py-2">
+      <header className={cn("sticky py-2", isMobile ? "px-4" : "px-8")}>
         <Card size="sm">
           <CardHeader>
             <div className="flex items-center justify-between">
@@ -102,7 +103,7 @@ function App() {
             </div>
           </CardHeader>
         </Card>
-      </div>
+      </header>
 
       <div className="flex flex-1 flex-col items-center justify-center gap-4">
         <Card className="w-full max-w-md">

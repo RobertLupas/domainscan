@@ -74,6 +74,7 @@ function App() {
     setSearch("")
     setLastSearch("")
     setCurrentDomainList([])
+    setDomainCheckError(null)
   }
 
   return (

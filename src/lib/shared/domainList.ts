@@ -6,7 +6,7 @@ const tlds = ["com", "app", "so"]
 export function getDomainList(
   nameOrDomain: string,
   separateWithHyphen: boolean = false,
-  tryWithPrefix: boolean = false
+  addPrefixes: boolean = false
 ): string[] {
   nameOrDomain = nameOrDomain.trim().toLowerCase()
   if (nameOrDomain.length === 0) return []
@@ -19,16 +19,14 @@ export function getDomainList(
   const combined: string[] = []
 
   if (!separateWithHyphen) {
-    combined.push(words.join(""))
-
-    if (tryWithPrefix)
+    if (!addPrefixes) combined.push(words.join(""))
+    else
       for (const prefix of prefixes)
         if (!words[0].startsWith(prefix))
           combined.push(`${prefix}${words.join("")}`)
   } else {
-    combined.push(words.join("-"))
-
-    if (tryWithPrefix) {
+    if (!addPrefixes) combined.push(words.join("-"))
+    else {
       for (const prefix of prefixes)
         if (!words[0].startsWith(prefix))
           combined.push(`${prefix}-${words.join("-")}`)

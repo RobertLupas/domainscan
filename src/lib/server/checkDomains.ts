@@ -9,12 +9,9 @@ export const checkDomains = createServerFn()
   .validator((data: { domains: Domain[] }) => data)
   .handler(async ({ data }) => {
     try {
-      const validatedDomains: string[] = []
-
-      for (const domain of data.domains.map((d) => d.name)) {
-        const d = getDomain(domain)
-        if (d != null) validatedDomains.push(d)
-      }
+      const validatedDomains = data.domains
+        .map((d) => getDomain(d.name))
+        .filter((d): d is string => d != null)
 
       if (validatedDomains.length == 0) return
 

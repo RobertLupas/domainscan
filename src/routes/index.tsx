@@ -18,6 +18,7 @@ import AboutDialog from "@/components/aboutDialog.tsx"
 import GithubLink from "@/components/githubLink.tsx"
 import { useIsMobile } from "@/hooks/use-mobile.ts"
 import { cn } from "@/lib/utils.ts"
+import { defaultPrefixList, defaultTldList } from "@/lib/shared/data.ts"
 
 export const Route = createFileRoute("/")({ component: App })
 
@@ -34,6 +35,9 @@ function App() {
   const [domainCheckError, setDomainCheckError] = React.useState<string | null>(
     null
   )
+  const [prefixList, setPrefixList] =
+    React.useState<string[]>(defaultPrefixList)
+  const [tldList, settldList] = React.useState<string[]>(defaultTldList)
 
   const searchChanged = () =>
     search != lastSearch ||
@@ -46,7 +50,13 @@ function App() {
 
   const handleSearch = async () => {
     if (isSearchable() && searchChanged()) {
-      const domains = getDomainList(search, hyphenToggle, prefixToggle)
+      const domains = getDomainList(
+        search,
+        hyphenToggle,
+        prefixToggle,
+        prefixList,
+        tldList
+      )
 
       setLastSearch(search)
       setLastHyphenToggle(hyphenToggle)
@@ -97,7 +107,10 @@ function App() {
                     <GithubLink />
                   </>
                 )}
-                <SettingsDialog />
+                <SettingsDialog
+                  prefixList={prefixList}
+                  onPrefixListChange={setPrefixList}
+                />
                 {!isMobile && <ThemeToggle />}
               </div>
             </div>

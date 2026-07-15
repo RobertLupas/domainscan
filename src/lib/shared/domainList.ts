@@ -1,7 +1,5 @@
 import { getDomain } from "tldts"
-
-const prefixes = ["use", "join", "try", "my", "your"]
-const tlds = ["com", "app", "so"]
+import { defaultPrefixList, defaultTldList } from "@/lib/shared/data.ts"
 
 export type Domain = {
   name: string
@@ -12,7 +10,9 @@ export type Domain = {
 export function getDomainList(
   nameOrDomain: string,
   separateWithHyphen: boolean = false,
-  addPrefixes: boolean = false
+  addPrefixes: boolean = false,
+  prefixes: string[] = defaultPrefixList,
+  tlds: string[] = defaultTldList
 ): Domain[] {
   nameOrDomain = nameOrDomain.trim().toLowerCase()
   if (nameOrDomain.length === 0) return []

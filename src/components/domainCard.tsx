@@ -31,7 +31,7 @@ export default function DomainCard({
             <Spinner />
           ) : domain.available ? (
             domain.price ? (
-              domain.price
+              `$${domain.price}`
             ) : (
               "N/A"
             )

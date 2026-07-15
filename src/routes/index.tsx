@@ -29,10 +29,21 @@ function App() {
   const [search, setSearch] = React.useState("")
   const [lastSearch, setLastSearch] = React.useState("")
   const [currentDomainList, setCurrentDomainList] = React.useState<Domain[]>([])
-  const [hyphenToggle, setHyphenToggle] = React.useState(false)
-  const [lastHyphenToggle, setLastHyphenToggle] = React.useState(false)
-  const [prefixToggle, setPrefixToggle] = React.useState(false)
-  const [lastPrefixToggle, setLastPrefixToggle] = React.useState(false)
+  const [hyphenToggle, setHyphenToggle] = useLocalStorage<boolean>(
+    "hyphenToggle",
+    false,
+    { initializeWithValue: false }
+  )
+  React.useEffect(() => {
+    console.log("hyphenToggle", hyphenToggle)
+  }, [hyphenToggle])
+  const [lastHyphenToggle, setLastHyphenToggle] = React.useState(hyphenToggle)
+  const [prefixToggle, setPrefixToggle] = useLocalStorage<boolean>(
+    "prefixToggle",
+    false,
+    { initializeWithValue: false }
+  )
+  const [lastPrefixToggle, setLastPrefixToggle] = React.useState(prefixToggle)
   const [loading, setLoading] = React.useState(false)
   const [domainCheckError, setDomainCheckError] = React.useState<string | null>(
     null

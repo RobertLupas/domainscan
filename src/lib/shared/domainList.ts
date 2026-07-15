@@ -32,15 +32,12 @@ export function getDomainList(
           combined.push(`${prefix}${words.join("")}`)
   } else {
     if (!addPrefixes) combined.push(words.join("-"))
-    else {
+    else
       for (const prefix of prefixes)
-        if (!words[0].startsWith(prefix))
+        if (!words[0].startsWith(prefix)) {
           combined.push(`${prefix}-${words.join("-")}`)
-
-      for (const prefix of prefixes)
-        if (!words[0].startsWith(prefix))
-          combined.push(`${prefix}-${words.join("")}`)
-    }
+          // if (words.length > 1) combined.push(`${prefix}-${words.join("")}`)
+        }
   }
 
   const combinedWithTlds: string[] = []

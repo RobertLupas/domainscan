@@ -8,11 +8,7 @@ import {
 } from "@/components/ui/dialog.tsx"
 import { Button } from "@/components/ui/button.tsx"
 import { HugeiconsIcon } from "@hugeicons/react"
-import {
-  Add01Icon,
-  Settings01Icon,
-  Undo02Icon,
-} from "@hugeicons/core-free-icons"
+import { Add01Icon, Settings01Icon, Undo02Icon, } from "@hugeicons/core-free-icons"
 import { Badge } from "@/components/ui/badge.tsx"
 import { Input } from "@/components/ui/input.tsx"
 import { ButtonGroup } from "@/components/ui/button-group.tsx"
@@ -23,6 +19,7 @@ import AboutDialog from "@/components/aboutDialog.tsx"
 import GithubLink from "@/components/githubLink.tsx"
 import { defaultPrefixList } from "@/lib/shared/data.ts"
 import React from "react"
+import { cn } from "@/lib/utils.ts"
 
 export default function SettingsDialog({
   prefixList = defaultPrefixList,
@@ -31,6 +28,8 @@ export default function SettingsDialog({
   prefixList: string[]
   onPrefixListChange: React.Dispatch<React.SetStateAction<string[]>>
 }) {
+  const MAX_PREFIXES = 6
+
   const isMobile = useIsMobile()
   const [newPrefix, setNewPrefix] = React.useState("")
 
@@ -38,7 +37,9 @@ export default function SettingsDialog({
     const value = newPrefix.trim()
     if (!value) return
     onPrefixListChange((prev) =>
-      prev.includes(value) ? prev : [...prev, value]
+      prev.includes(value) || prev.length >= MAX_PREFIXES
+        ? prev
+        : [...prev, value]
     )
     setNewPrefix("")
   }
@@ -77,6 +78,14 @@ export default function SettingsDialog({
                     Reset
                   </Button>
                 </div>
+                <p
+                  className={cn(
+                    "mb-2 text-xs text-muted-foreground",
+                    prefixList.length >= MAX_PREFIXES && "text-red-200"
+                  )}
+                >
+                  {prefixList.length}/{MAX_PREFIXES} prefixes
+                </p>
                 <div className="flex flex-wrap items-center gap-x-1 gap-y-2">
                   {prefixList.map((prefix) => (
                     <Badge
@@ -92,6 +101,7 @@ export default function SettingsDialog({
                   <ButtonGroup>
                     <Input
                       className="h-7 w-24 text-center"
+                      disabled={prefixList.length >= MAX_PREFIXES}
                       value={newPrefix}
                       onChange={(e) => setNewPrefix(e.target.value)}
                       onKeyDown={(e) => {
@@ -105,6 +115,7 @@ export default function SettingsDialog({
                     <Button
                       variant="outline"
                       className="h-7 p-2 pl-1.5"
+                      disabled={prefixList.length >= MAX_PREFIXES}
                       onClick={addPrefix}
                     >
                       <HugeiconsIcon icon={Add01Icon} />

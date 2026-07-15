@@ -56,11 +56,14 @@ function App() {
           data: { domains },
         })
 
-        if (res) {
-          setCurrentDomainList(res)
-        }
-      } catch {
-        setDomainCheckError("Error checking domains")
+        setCurrentDomainList(res ?? [])
+      } catch (err) {
+        setCurrentDomainList([])
+        setDomainCheckError(
+          err instanceof Error
+            ? `Error checking domains ${err.message}`
+            : "Error checking domains."
+        )
       } finally {
         setLoading(false)
       }

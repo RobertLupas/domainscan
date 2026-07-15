@@ -15,6 +15,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs.tsx"
 import { Toggle } from "@/components/ui/toggle.tsx"
 import { checkDomains } from "@/lib/server/checkDomains.ts"
 import AboutDialog from "@/components/aboutDialog.tsx"
+import GithubLink from "@/components/githubLink.tsx"
 
 export const Route = createFileRoute("/")({ component: App })
 
@@ -88,18 +89,7 @@ function App() {
 
               <div className="flex items-center gap-2">
                 <AboutDialog />
-                <a
-                  className={cn(
-                    buttonVariants({
-                      variant: "outline",
-                      size: "icon",
-                    })
-                  )}
-                  href={"https://github.com/robertlupas/domainscan"}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  children={<HugeiconsIcon icon={Github01Icon} />}
-                />
+                <GithubLink />
                 <ThemeToggle />
               </div>
             </div>

@@ -1,10 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router"
-import { Button, buttonVariants } from "@/components/ui/button"
+import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle.tsx"
 import { Card, CardContent, CardHeader } from "@/components/ui/card.tsx"
 import { HugeiconsIcon } from "@hugeicons/react"
-import { Cancel01Icon, Github01Icon, Search01Icon, } from "@hugeicons/core-free-icons"
-import { cn } from "@/lib/utils.ts"
+import { Cancel01Icon, Search01Icon } from "@hugeicons/core-free-icons"
 import { Input } from "@/components/ui/input.tsx"
 import { ButtonGroup } from "@/components/ui/button-group.tsx"
 import type { Domain } from "@/lib/shared/domainList.ts"
@@ -14,12 +13,15 @@ import DomainCard from "@/components/domainCard.tsx"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs.tsx"
 import { Toggle } from "@/components/ui/toggle.tsx"
 import { checkDomains } from "@/lib/server/checkDomains.ts"
+import SettingsDialog from "@/components/settingsDialog.tsx"
 import AboutDialog from "@/components/aboutDialog.tsx"
 import GithubLink from "@/components/githubLink.tsx"
+import { useIsMobile } from "@/hooks/use-mobile.ts"
 
 export const Route = createFileRoute("/")({ component: App })
 
 function App() {
+  const isMobile = useIsMobile()
   const [search, setSearch] = React.useState("")
   const [lastSearch, setLastSearch] = React.useState("")
   const [currentDomainList, setCurrentDomainList] = React.useState<Domain[]>([])
@@ -88,9 +90,14 @@ function App() {
               <h1 className="font-heading text-xl font-medium">DomainScan</h1>
 
               <div className="flex items-center gap-2">
-                <AboutDialog />
-                <GithubLink />
-                <ThemeToggle />
+                {!isMobile && (
+                  <>
+                    <AboutDialog />
+                    <GithubLink />
+                  </>
+                )}
+                <SettingsDialog />
+                {!isMobile && <ThemeToggle />}
               </div>
             </div>
           </CardHeader>

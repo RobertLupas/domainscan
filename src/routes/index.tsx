@@ -250,7 +250,8 @@ function App() {
               <CollapsibleContent className="flex flex-col gap-2 pt-2">
                 {bookmarkedDomainList.length === 0 ? (
                   <p>
-                    Save domains so you don't forget your awesome name idea :)
+                    Hover over a domain and click the bookmark icon so you don't
+                    forget your awesome name idea :)
                   </p>
                 ) : (
                   bookmarkedDomainList.map((domain: Domain) => (

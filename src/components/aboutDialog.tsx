@@ -1,4 +1,11 @@
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog.tsx"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog.tsx"
 import { Button } from "@/components/ui/button.tsx"
 
 export default function AboutDialog() {
@@ -6,8 +13,10 @@ export default function AboutDialog() {
     <Dialog>
       <DialogTrigger
         render={
-          <Button size="icon" variant="outline">
-            ?
+          <Button size="icon" variant="outline" className="group">
+            <span className="transition-transform duration-400 group-hover:scale-130">
+              ?
+            </span>
           </Button>
         }
       />

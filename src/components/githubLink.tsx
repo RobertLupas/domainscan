@@ -10,12 +10,18 @@ export default function GithubLink() {
         buttonVariants({
           variant: "outline",
           size: "icon",
-        })
+        }),
+        "group"
       )}
       href={"https://github.com/robertlupas/domainscan"}
       target="_blank"
       rel="noopener noreferrer"
-      children={<HugeiconsIcon icon={Github01Icon} />}
+      children={
+        <HugeiconsIcon
+          icon={Github01Icon}
+          className="transition-transform duration-400 group-hover:scale-130"
+        />
+      }
     />
   )
 }

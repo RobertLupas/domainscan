@@ -8,7 +8,11 @@ import {
 } from "@/components/ui/dialog.tsx"
 import { Button } from "@/components/ui/button.tsx"
 import { HugeiconsIcon } from "@hugeicons/react"
-import { Add01Icon, Settings01Icon, Undo02Icon, } from "@hugeicons/core-free-icons"
+import {
+  Add01Icon,
+  Settings01Icon,
+  Undo02Icon,
+} from "@hugeicons/core-free-icons"
 import { Badge } from "@/components/ui/badge.tsx"
 import { Input } from "@/components/ui/input.tsx"
 import { ButtonGroup } from "@/components/ui/button-group.tsx"
@@ -62,8 +66,11 @@ export default function SettingsDialog({
     <Dialog>
       <DialogTrigger
         render={
-          <Button size="icon" variant="outline">
-            <HugeiconsIcon icon={Settings01Icon} />
+          <Button size="icon" variant="outline" className="group">
+            <HugeiconsIcon
+              icon={Settings01Icon}
+              className="transition-transform duration-400 group-hover:scale-130 group-hover:rotate-90 group-active:rotate-180"
+            />
           </Button>
         }
       />

@@ -239,12 +239,15 @@ function App() {
         <Card className="w-full max-w-md">
           <CardHeader>
             <Collapsible>
-              <CollapsibleTrigger className="flex w-full items-center justify-between">
+              <CollapsibleTrigger className="group flex w-full items-center justify-between">
                 <h2 className="font-heading text-lg font-medium">Saved</h2>
 
                 <div className="flex items-center gap-2">
                   {bookmarkedDomainList.length}
-                  <HugeiconsIcon icon={ArrowDown01Icon} />
+                  <HugeiconsIcon
+                    icon={ArrowDown01Icon}
+                    className="transition-transform duration-400 group-active:translate-y-0.5 group-data-panel-open:-rotate-180"
+                  />
                 </div>
               </CollapsibleTrigger>
               <CollapsibleContent className="flex flex-col gap-2 pt-2">

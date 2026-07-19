@@ -3,7 +3,11 @@ import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle.tsx"
 import { Card, CardContent, CardHeader } from "@/components/ui/card.tsx"
 import { HugeiconsIcon } from "@hugeicons/react"
-import { Cancel01Icon, Search01Icon } from "@hugeicons/core-free-icons"
+import {
+  ArrowDown01Icon,
+  Cancel01Icon,
+  Search01Icon,
+} from "@hugeicons/core-free-icons"
 import { Input } from "@/components/ui/input.tsx"
 import { ButtonGroup } from "@/components/ui/button-group.tsx"
 import type { Domain } from "@/lib/shared/domainList.ts"
@@ -22,6 +26,11 @@ import { cn } from "@/lib/utils.ts"
 import { defaultPrefixList } from "@/lib/shared/data.ts"
 import { useLocalStorage } from "usehooks-ts"
 import { defaultTldToggleState } from "@/lib/client/tldToggles.ts"
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible.tsx"
 
 export const Route = createFileRoute("/")({ component: App })
 
@@ -57,6 +66,10 @@ function App() {
     "tldToggleList",
     defaultTldToggleState
   )
+
+  const [bookmarkedDomainList, setBookmarkedDomainList] = useLocalStorage<
+    Domain[]
+  >("bookmarkedDomainList", [])
 
   const tldList = Object.keys(tldToggleList).filter((key) => tldToggleList[key])
 
@@ -116,6 +129,15 @@ function App() {
     setLastSearch("")
     setCurrentDomainList([])
     setDomainCheckError(null)
+  }
+
+  const bookmarkDomain = (domain: Domain) => {
+    setBookmarkedDomainList((prev) => {
+      if (prev.some((d) => d.name === domain.name))
+        return prev.filter((d) => d.name !== domain.name)
+
+      return [...prev, domain]
+    })
   }
 
   return (
@@ -214,6 +236,40 @@ function App() {
           </CardHeader>
         </Card>
 
+        <Card className="w-full max-w-md">
+          <CardHeader>
+            <Collapsible>
+              <CollapsibleTrigger className="flex w-full items-center justify-between">
+                <h2 className="font-heading text-lg font-medium">Saved</h2>
+
+                <div className="flex items-center gap-2">
+                  {bookmarkedDomainList.length}
+                  <HugeiconsIcon icon={ArrowDown01Icon} />
+                </div>
+              </CollapsibleTrigger>
+              <CollapsibleContent className="flex flex-col gap-2 pt-2">
+                {bookmarkedDomainList.length === 0 ? (
+                  <p>
+                    Save domains so you don't forget your awesome name idea :)
+                  </p>
+                ) : (
+                  bookmarkedDomainList.map((domain: Domain) => (
+                    <DomainCard
+                      domain={domain}
+                      loading={loading}
+                      key={domain.name}
+                      onBookmark={() => bookmarkDomain(domain)}
+                      bookmarked={bookmarkedDomainList.some(
+                        (d) => d.name === domain.name
+                      )}
+                    />
+                  ))
+                )}
+              </CollapsibleContent>
+            </Collapsible>
+          </CardHeader>
+        </Card>
+
         {domainCheckError === null && currentDomainList.length > 0 && (
           <Card className="w-full max-w-md">
             <CardContent className="flex flex-col gap-2">
@@ -226,6 +282,10 @@ function App() {
                   domain={domain}
                   loading={loading}
                   key={domain.name}
+                  onBookmark={() => bookmarkDomain(domain)}
+                  bookmarked={bookmarkedDomainList.some(
+                    (d) => d.name === domain.name
+                  )}
                 />
               ))}
             </CardContent>

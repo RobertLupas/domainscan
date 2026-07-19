@@ -207,7 +207,7 @@ function App() {
               </Button>
             </ButtonGroup>
 
-            <div className="mt-2 grid gap-2 min-[400px]:grid-cols-[1fr_auto]">
+            <div className="mt-1 grid gap-2 min-[400px]:grid-cols-[1fr_auto]">
               <Tabs
                 value={hyphenToggle ? "hyphen" : "no-separator"}
                 onValueChange={(value) => setHyphenToggle(value === "hyphen")}

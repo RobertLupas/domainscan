@@ -1,21 +1,30 @@
-# TanStack Start + shadcn/ui
+# DomainScan
 
-This is a template for a new TanStack Start project with React, TypeScript, and shadcn/ui.
+Generate domain name ideas and check availability and prices for your next idea.
 
-## Adding components
+![DomainScan in action](./assets/demo.gif)
 
-To add components to your app, run the following command:
+[**Try it**](https://domainscan.robertlupas.workers.dev/)
+
+## Quick Start
+
+### Run locally
+
+Add your Cloudflare tokens (`CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN`) to a `.env` file in the root of the project.
 
 ```bash
-npx shadcn@latest add button
+bun install
+bun dev
 ```
 
-This will place the ui components in the `components` directory.
+## Features
 
-## Using components
+- Generate domain name ideas by adding prefixes, suffixes and separators (between multiple names) to your base idea
+- Check availability and prices for generated domain names using the Cloudflare Registrar API
+- Save domain names for later reference
 
-To use the components in your app, import them as follows:
+## Tech Stack
 
-```tsx
-import { Button } from "@/components/ui/button";
-```
+- [Tanstack](https://tanstack.com/) - Start, Router, and React Query
+- [Cloudflare TypeScript API Library](https://www.npmjs.com/package/cloudflare) - Domain availability and pricing API (using the Cloudflare Registrar)
+- [tldts](https://www.npmjs.com/package/tldts) - Parse and validate domain names

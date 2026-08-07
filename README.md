@@ -36,3 +36,4 @@ bun run deploy
 - [Tanstack](https://tanstack.com/) - Start, Router, and React Query
 - [Cloudflare TypeScript API Library](https://www.npmjs.com/package/cloudflare) - Domain availability and pricing API (using the Cloudflare Registrar)
 - [tldts](https://www.npmjs.com/package/tldts) - Parse and validate domain names
+- [Wrangler](https://developers.cloudflare.com/workers/wrangler/) - Deploy to Cloudflare Workers

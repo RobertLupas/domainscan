@@ -44,9 +44,6 @@ function App() {
     false,
     { initializeWithValue: false }
   )
-  React.useEffect(() => {
-    console.log("hyphenToggle", hyphenToggle)
-  }, [hyphenToggle])
   const [lastHyphenToggle, setLastHyphenToggle] = React.useState(hyphenToggle)
   const [prefixToggle, setPrefixToggle] = useLocalStorage<boolean>(
     "prefixToggle",

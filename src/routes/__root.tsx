@@ -17,8 +17,12 @@ export const Route = createRootRoute({
         content: "width=device-width, initial-scale=1",
       },
       {
-        title: "TanStack Start Starter",
+        title: "DomainScan | Find a domain name for your next project",
       },
+      {
+        name: "description",
+        content: "Find a domain name and check availability and prices for your next project.",
+      }
     ],
     links: [
       {

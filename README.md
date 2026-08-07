@@ -17,6 +17,14 @@ bun install
 bun dev
 ```
 
+### Deploy to Cloudflare Workers
+
+> First, try `bun run preview` to make sure everything works as expected.
+
+```bash
+bun run deploy
+```
+
 ## Features
 
 - Generate domain name ideas by adding prefixes, suffixes and separators (between multiple names) to your base idea
